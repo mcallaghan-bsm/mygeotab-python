@@ -19,6 +19,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.exceptions import Timeout
 from requests.packages import urllib3
+from six.moves import UserList
 from six.moves.urllib.parse import urlparse
 
 from . import __title__, __version__
@@ -141,7 +142,7 @@ class API(object):
             if 'search' in parameters:
                 parameters.update(parameters['search'])
             parameters = dict(search=parameters, resultsLimit=results_limit)
-        return self.call('Get', type_name=type_name, **parameters)
+        return ResultList(self.call('Get', type_name=type_name, **parameters))
 
     def add(self, type_name, entity):
         """Adds an entity using the API. Shortcut for using call() with the 'Add' method.
@@ -225,6 +226,13 @@ class API(object):
         return API(username=credentials.username, password=credentials.password,
                    database=credentials.database, session_id=credentials.session_id,
                    server=credentials.server)
+
+
+class ResultList(UserList):
+    """The customized result list
+    """
+    def sort(self, key, reverse=False):
+        return self.data.sort(key=lambda d: d['key'], reverse=reverse)
 
 
 class Credentials(object):
