@@ -18,7 +18,7 @@ jobs:
           name: Running tests
           command: |
               . venv/bin/activate
-              py.test --cov-config .coveragerc --cov-report xml:$CIRCLE_TEST_REPORTS/coverage.xml --cov mygeotab --junitxml $CIRCLE_TEST_REPORTS/python3-test-results.xml tests/
+              py.test --cov-config .coveragerc --cov-report xml:$CIRCLE_TEST_REPORTS/coverage.xml --cov mygeotab --junitxml $CIRCLE_TEST_REPORTS/python3-test-results.xml --monkeytype-output=$CIRCLE_TEST_REPORTS/python3-monkeytype.sqlite3 tests/
       - run: 
           name: Uploading code coverage results
           command: bash <(curl -s https://codecov.io/bash)
