@@ -39,7 +39,7 @@ setup(
     description='An unofficial Python client for the MyGeotab API',
     long_description=readme + '\n\n' + changelog,
     extras_require={
-        'console': ['ipython'],
+        'notebook': ['pandas'],
         ":python_version>='3.5'": ["aiohttp"],
     },
     test_suite="tests",

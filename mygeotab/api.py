@@ -231,9 +231,41 @@ class API(object):
 class ResultList(UserList):
     """The customized result list
     """
-    def sort(self, key, reverse=False):
-        return self.data.sort(key=lambda d: d['key'], reverse=reverse)
+    def sorted_by(self, key, reverse=False):
+        """Returns a ResultList, sorted by a provided key.
 
+        :param key: The key to sort the data with.
+        :type key: str
+        :param reverse: If true, reverse the sort direction.
+        :type reverse: bool
+        :rtype: ResultList
+        """
+        return ResultList(self.data.sort(key=lambda d: d[key], reverse=reverse))
+
+    def first(self):
+        """Gets the first entity in the list, if it exists.
+
+        :rtype: dict
+        """
+        return self.data[0] if self.data else None
+
+    def last(self):
+        """Gets the last entity in the list, if it exists.
+
+        :rtype: dict
+        """
+        return self.data[-1] if self.data else None
+
+    def to_dataframe(self):
+        """Transforms the data into a pandas DataFrame
+
+        :rtype: pandas.DataFrame
+        """
+        try:
+            import pandas
+        except ImportError:
+            raise ImportError('Please install the \'pandas\' package')
+        return pandas.DataFrame.from_dict(self.data)
 
 class Credentials(object):
     """The MyGeotab Credentials object.
