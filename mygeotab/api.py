@@ -247,9 +247,9 @@ class ResultList(UserList):
         """The pretty printer for IPython
         """
         if cycle:
-            p.text(f'{self.type_name}(...)')
+            p.text('{}(...)'.format(self.type_name))
         else:
-            with p.group(8, f'{self.type_name}([', '])'):
+            with p.group(8, '{}([', '])'.format(self.type_name)):
                 for idx, item in enumerate(self.data):
                     if idx:
                         p.text(',')
