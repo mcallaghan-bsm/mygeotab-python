@@ -142,7 +142,7 @@ class API(object):
             if 'search' in parameters:
                 parameters.update(parameters['search'])
             parameters = dict(search=parameters, resultsLimit=results_limit)
-        return ResultList(self.call('Get', type_name=type_name, **parameters))
+        return ResultList(self.call('Get', type_name=type_name, **parameters), type_name=type_name)
 
     def add(self, type_name, entity):
         """Adds an entity using the API. Shortcut for using call() with the 'Add' method.
@@ -231,6 +231,30 @@ class API(object):
 class ResultList(UserList):
     """The customized result list
     """
+    def __init__(self, data, type_name):
+        """Gets entities using the API. Shortcut for using call() with the 'Get' method.
+
+        :param data: The list of result data.
+        :type data: list
+        :param type_name: The type of entity.
+        :type type_name: str
+        """
+        super(ResultList, self).__init__(data)
+        self.type_name = type_name
+
+    def _repr_pretty_(self, p, cycle):
+        """The pretty printer for IPython
+        """
+        if cycle:
+            p.text(f'{self.type_name}(...)')
+        else:
+            with p.group(8, f'{self.type_name}([', '])'):
+                for idx, item in enumerate(self.data):
+                    if idx:
+                        p.text(',')
+                        p.breakable()
+                    p.pretty(item)
+
     def sorted_by(self, key, reverse=False):
         """Returns a ResultList, sorted by a provided key.
 
@@ -240,7 +264,7 @@ class ResultList(UserList):
         :type reverse: bool
         :rtype: ResultList
         """
-        return ResultList(self.data.sort(key=lambda d: d[key], reverse=reverse))
+        return ResultList(self.data.sort(key=lambda d: d[key], reverse=reverse), type_name=self.type_name)
 
     def first(self):
         """Gets the first entity in the list, if it exists.
