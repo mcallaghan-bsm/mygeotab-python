@@ -264,7 +264,7 @@ class ResultList(UserList):
         :type reverse: bool
         :rtype: ResultList
         """
-        return ResultList(self.data.sort(key=lambda d: d[key], reverse=reverse), type_name=self.type_name)
+        return ResultList(sorted(self.data, key=lambda d: d[key], reverse=reverse), type_name=self.type_name)
 
     def first(self):
         """Gets the first entity in the list, if it exists.
