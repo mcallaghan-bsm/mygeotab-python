@@ -281,6 +281,14 @@ class ResultList(UserList):
         """
         return self.data[-1] if self.data else None
 
+    def single(self):
+        """Like `first()`, but first asserts that there is only one entity in the results list.
+
+        :rtype: dict
+        """
+        assert len(self.data) == 1
+        return self.first()
+
     def to_dataframe(self):
         """Transforms the data into a pandas DataFrame
 
