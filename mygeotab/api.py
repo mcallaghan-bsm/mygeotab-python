@@ -249,7 +249,7 @@ class ResultList(UserList):
         if cycle:
             p.text('{}(...)'.format(self.type_name))
         else:
-            with p.group(8, '{}([', '])'.format(self.type_name)):
+            with p.group(8, '{}(['.format(self.type_name), '])'):
                 for idx, item in enumerate(self.data):
                     if idx:
                         p.text(',')
@@ -286,7 +286,8 @@ class ResultList(UserList):
 
         :rtype: dict
         """
-        assert len(self.data) == 1
+        data_length = len(self.data)
+        assert data_length == 1, 'Expecting one entity, but {} entities were returned'.format(data_length)
         return self.first()
 
     def to_dataframe(self):
