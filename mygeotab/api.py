@@ -290,11 +290,11 @@ class ResultList(UserList):
         assert data_length == 1, 'Expecting one entity, but {} entities were returned'.format(data_length)
         return self.first()
 
-    def to_dataframe(self, normalize_columns):
+    def to_dataframe(self, normalize=False):
         """Transforms the data into a pandas DataFrame
 
-        :param normalize_columns: The columns to normalize.
-        :type normalize_columns: list
+        :param normalize: Whether or not to normalize any nested objects in the results into distinct columns.
+        :type normalize: bool
         :rtype: pandas.DataFrame
         """
         try:
@@ -302,15 +302,10 @@ class ResultList(UserList):
             from pandas.io.json import json_normalize
         except ImportError:
             raise ImportError('Please install the \'pandas\' package')
-        df = pandas.DataFrame.from_dict(self.data)
-        if normalize_columns:
-            normalized_col_dfs = []
-            for col in normalize_columns:
-                if col not in df:
-                    raise Exception('Column \'{col}\' not in resulting dataframe'.format(col=col))
-                normalized_col_dfs.append(json_normalize(list(df[col])))
-            df = pandas.concat([df].extend(normalized_col_dfs)).drop(normalize_columns, axis=1)
-        return df
+        if normalize:
+            return json_normalize(self.data)
+        return pandas.DataFrame.from_dict(self.data)
+
 
 class Credentials(object):
     """The MyGeotab Credentials object.
