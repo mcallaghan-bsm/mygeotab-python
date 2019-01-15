@@ -256,7 +256,7 @@ class ResultList(UserList):
                         p.breakable()
                     p.pretty(item)
 
-    def sorted_by(self, key, reverse=False):
+    def sortby(self, key, reverse=False):
         """Returns a ResultList, sorted by a provided key.
 
         :param key: The key to sort the data with.
