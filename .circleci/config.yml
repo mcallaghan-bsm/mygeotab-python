@@ -33,16 +33,16 @@ jobs:
       - run:
           name: Installing Python dependencies
           command: |
-            pip install virtualenv
-            virtualenv venv
-            . venv/bin/activate
-            pip install .
-            pip install -r dev-requirements.txt
+              pip install virtualenv
+              virtualenv venv
+              . venv/bin/activate
+              pip install .
+              pip install -r dev-requirements.txt
       - run:
           name: Running tests
           command: |
-            . venv/bin/activate
-            py.test --junitxml $CIRCLE_TEST_REPORTS/python2-test-results.xml tests/
+              . venv/bin/activate
+              py.test --junitxml $CIRCLE_TEST_REPORTS/python2-test-results.xml tests/
       - store_test_results:
           path: /tmp/circleci-test-results
   pypy2:
